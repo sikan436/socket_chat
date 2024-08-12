@@ -17,6 +17,8 @@ def run_server():
     while True:
         request = client_socket.recv(1024)
         request = request.decode("utf-8") # convert bytes to string
+        input=("hi there")
+        client_socket.send(f"{input}".encode()) 
         
         # if we receive "close" from the client, then we break
         # out of the loop and close the conneciton
