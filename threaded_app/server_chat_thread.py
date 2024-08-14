@@ -21,7 +21,7 @@ def handle_client(client):
             clients.remove(index)
             client.close()
             alias=aliases[index]
-            broadcast(f" alias left the chat".encode(utf-8))
+            broadcast(f" alias left the chat".encode('utf-8'))
             aliases.remove(alias)
             break
 
@@ -36,7 +36,7 @@ def run_server():
         aliases.append(alias)
         clients.append(client)
         print(f"accepted connection from {alias}")
-        broadcast(f"{alias} joined the chat")
+        broadcast(f"{alias} joined the chat".encode("utf-8"))
         client.send("you are now connected".encode("utf-8"))
         thread=threading.Thread(target=handle_client,args=(client,))
         thread.start()

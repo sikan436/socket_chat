@@ -8,10 +8,36 @@ alias=input("enter your alias")
 server.connect((ip_addr,port))
 
 
-def run_client():
+def msg_rcv():
     while True:
-        message=input("type message")
-        server.send(f"{alias}:message".encode("utf-8"))
-        
-if __name__=="__main__":
-    run_client()
+        try:
+            msg=server.recv(1024)
+            msg=msg.decode('utf=8')
+            if msg=='your nickname?':
+                server.send(alias.encode("utf-8"))
+            else:
+                print (msg)
+        except:
+            print("error")
+            server.close()
+            break
+
+def msg_send():
+    while True:
+        try:
+            msg=f'{alias}:{input("")}'
+            server.send(msg.encode('utf-8'))
+        except:
+            print ("connection lost")
+            server.close()
+            break
+
+if __name__=='__main__':
+    rcv_thread=threading.Thread(target=msg_rcv)
+    rcv_thread.start()    
+    send_thread=threading.Thread(target=msg_send)
+    send_thread.start()
+            
+
+            
+
