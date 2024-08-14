@@ -1,11 +1,11 @@
-import socket,threading
+import socket,threading,sys
 ip_addr='127.0.0.1'
 port=12345
 server=socket.socket()
 aliases=[]
 clients=[]
 server.bind((ip_addr,port))
-
+password='hello'
 def broadcast(message):
     for client in clients:
         client.send(message)
@@ -14,16 +14,26 @@ def broadcast(message):
 def handle_client(client):
     while True:
         try:
-            message=client.recv(1024)
+            message=client.recv(1024).decode('utf-8')
             broadcast(message)
         except:
             index=clients.index(client)
             clients.remove(client)
             client.close()
             alias=aliases[index]
-            broadcast(f" alias left the chat".encode('utf-8'))
+            broadcast(f" {alias} left the chat".encode('utf-8'))
             aliases.remove(alias)
             break
+def is_admin(alias,client):
+        client.send("enter password?".encode('utf-8'))
+        pwd=client.recv(1024).decode('utf-8')
+        if pwd==password:
+            server.send("welcome admin".encode('utf-8'))
+            print(f"{alias} is admin")
+            broadcast("admin joined be respectful".encode('utf-8'))
+        else:
+            sys.exit(0)
+
 
 def run_server():
     server.listen(5)
@@ -32,7 +42,9 @@ def run_server():
         client,address= server.accept()
 
         client.send("your nickname?".encode("utf-8"))
-        alias=client.recv(1024)
+        alias=client.recv(1024).decode('utf-8')
+        
+        is_admin(alias,client)
         aliases.append(alias)
         clients.append(client)
         print(f"accepted connection from {alias}")

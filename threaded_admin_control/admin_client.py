@@ -12,11 +12,14 @@ def msg_rcv():
     while True:
         try:
             msg=server.recv(1024)
-            msg=msg.decode('utf=8')
+            msg=msg.decode('utf-8')
             if msg=='your nickname?':
                 server.send(alias.encode("utf-8"))
+            elif msg=='enter password?':
+                pwd=input('enter password')
+                server.send(pwd.encode('utf-8'))
             else:   
-                print (msg)
+                print(msg)
             
         except:
             print("error")
