@@ -5,7 +5,7 @@ server=socket.socket()
 aliases=[]
 clients=[]
 server.bind((ip_addr,port))
-password='hello'
+
 
 def broadcast(message):
     for client in clients:
@@ -38,14 +38,21 @@ def run_server():
         alias=client.recv(1024)
         alias=alias.decode('ascii')
         if alias=='admin':
+            client.send('pass'.encode('ascii'))
+            password=client.recv(1024).decode('ascii')
+            if password!='admin':
+                client.send('REFUSE'.encode('ascii'))
+                client.close()
+                continue
+        # if alias=='admin':
             
-            client.send("enter password?".encode('ascii'))
-            pwd=client.recv(1024).decode('ascii')
-            print (f" new password is {pwd}")
-            if pwd!=password:
-                    client.send("Refuse".encode('ascii'))
-                    client.close()
-                    continue         
+        #     client.send("enter password?".encode('ascii'))
+        #     pwd=client.recv(1024).decode('ascii')
+        #     print (f" new password is {pwd}")
+        #     if pwd!=password:
+        #             client.send("Refuse".encode('ascii'))
+        #             client.close()
+        #             continue         
         
         aliases.append(alias)
         clients.append(client)

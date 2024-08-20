@@ -13,14 +13,15 @@ if alias=='admin':
 def msg_rcv():
     while True:
         try:
-            msg=server.recv(1024)
-            msg=msg.decode('utf-8')
+            msg=server.recv(1024)  #alias
+
+            msg=msg
             if msg=='your nickname?':
-                server.send(alias.encode('utf-8'))
-                nxt_msg=server.send(pwd.encode('utf-8'))
+                server.send(alias.encode('ascii'))
+                nxt_msg=server.send(pwd.encode('ascii'))
                 if nxt_msg=='enter password?':
-                    server.send(pwd.encode("utf-8"))
-                    if server.recv(1024).decode('utf-8')=='Refuse':
+                    server.send(pwd.encode("ascii"))
+                    if server.recv(1024).decode('ascii')=='Refuse':
                         print("wrong password admin")
                         sys.exit(0)
                         
@@ -35,7 +36,8 @@ def msg_send():
     while True:
         try:
             msg=f'{alias}:{input("")}'
-            server.send(msg.encode('utf-8'))
+            # server.send(msg)
+            server.send(msg.encode('ascii'))
         except:
             print ("connection lost")
             server.close()
