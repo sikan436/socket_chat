@@ -42,7 +42,10 @@ def msg_rcv():
             break
 
 def msg_send():
+    
     while True:
+        if stop_thread:
+            break
         try:
             msg=f'{alias}:{input("")}'
             # server.send(msg)
