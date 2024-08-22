@@ -6,8 +6,6 @@ alias=input("enter your alias")
 server.connect((ip_addr,port))
 if alias=='admin':
     password=input('enter admin password')
-# if alias=='admin':
-#     pwd=input('identify yourself if you are admin ,enter password')
 
 stop_thread=False
 
@@ -27,12 +25,6 @@ def msg_rcv():
                     if server.recv(1024).decode('ascii')=='REFUSE':
                         print("connection was refused, wrong pwd")
                         stop_thread=True
-                # nxt_msg=server.send(pwd.encode('ascii'))
-                # if nxt_msg=='enter password?':
-                #     server.send(pwd.encode("ascii"))
-                #     if server.recv(1024).decode('ascii')=='Refuse':
-                #         print("wrong password admin")
-                #         sys.exit(0)
                         
             else:
                 print(msg)
@@ -48,6 +40,15 @@ def msg_send():
             break
         try:
             msg=f'{alias}:{input("")}'
+            mn=msg.split(':',1)
+            words=mn[1]
+            # print (f'words of msg are {words}')
+            first_char=words[0]
+            # print (f"first char is {first_char} " )
+            if first_char=='/' and alias!='admin' :
+                print ("only admin can fire commands")
+                continue
+    
             # server.send(msg)
             server.send(msg.encode('ascii'))
         except:
