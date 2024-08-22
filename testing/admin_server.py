@@ -15,37 +15,48 @@ def broadcast(message):
 def handle_client(client):
     while True:
         try:
-            message=client.recv(1024)
-            m1=message.decode('ascii')
+            musg=message=client.recv(1024)
+            m1=musg.decode('ascii')
             mn=m1.split(':',1)
             nick=mn[0]
             words=mn[1]
             print (f'message {words} recieved from alias {nick}')
             # print (f'words of msg are {words} ')
             first_char=words[0]
-            print (f"first char is {first_char}")
+
             if nick=='admin' and first_char=='/':
                 print('command recieved from admin, taking action')
                 culpit=words.split(' ',1)
                 name=culpit[1]
                 print (f'he is the culpit {name}')
+
                 print (clients)
                 print(aliases)
-                name.close()
-                index=clients.index(name)
-                print('before name remove ')
-                clients.remove(name)
-                print(f'client removed is name {name}')
-                client.close()
-                print ('client closed')
-                alias=aliases[index]
-                print ('before broadcast')
-                broadcast(f" {alias} banned by admin ".encode('ascii'))
-                print('after broadcast')
-                aliases.remove(alias)
+                if name in aliases:
+                    print (f'name {name} is in aliases {aliases}')
+                    name='bruh'
+                    index_name=aliases.index(name)
+                    print (f'index_name is {index_name}')
+                    client_to_kick=clients[index_name]
+                    clients.remove(client_to_kick)
+                    client_to_kick.send('you were kicked by admin'.encode('ascii'))
+                    client_to_kick.close()
+                    aliases.remove(name)
+                    broadcast(f'{name} was kicked by admin'.encode('ascii'))
+                    continue
+                # print('before name remove ')
+                # clients.remove(name)
+                # print(f'client removed is name {name}')
+                # client.close()
+                # print ('client closed')
+                # alias=aliases[index]
+                # print ('before broadcast')
+                # broadcast(f" {alias} banned by admin ".encode('ascii'))
+                # print('after broadcast')
+                # aliases.remove(alias)
 
-                continue
-            broadcast(message)
+            else:
+                broadcast(message)
         except:
             index=clients.index(client)
             print(f'client removed is {client}')
