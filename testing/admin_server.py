@@ -1,9 +1,10 @@
-import socket,threading
+import socket,threading,os
 ip_addr='127.0.0.1'
 port=12345
 server=socket.socket()
 aliases=[]
 clients=[]
+banned_users=[]
 server.bind((ip_addr,port))
 
 
@@ -18,10 +19,15 @@ def handle_client(client):
             musg=message=client.recv(1024)
             m1=musg.decode('ascii')
             mn=m1.split(':',1)
+            
             nick=mn[0]
             words=mn[1]
             print (f'message {words} recieved from alias {nick}')
             # print (f'words of msg are {words} ')
+            # allki_word=words.split(' ',1)
+            all_words=words.split(' ',1)
+            first_word=all_words[0]
+            print (f'first word is {first_word}')
             first_char=words[0]
 
             if nick=='admin' and first_char=='/':
@@ -32,18 +38,36 @@ def handle_client(client):
 
                 print (clients)
                 print(aliases)
-                if name in aliases:
-                    print (f'name {name} is in aliases {aliases}')
-                    name='bruh'
-                    index_name=aliases.index(name)
-                    print (f'index_name is {index_name}')
-                    client_to_kick=clients[index_name]
-                    clients.remove(client_to_kick)
-                    client_to_kick.send('you were kicked by admin'.encode('ascii'))
-                    client_to_kick.close()
-                    aliases.remove(name)
-                    broadcast(f'{name} was kicked by admin'.encode('ascii'))
-                    continue
+                if first_word=='/kick':
+                    if name in aliases:
+                        print (f'name {name} is in aliases {aliases}')
+                        
+                        index_name=aliases.index(name)
+                        print (f'index_name is {index_name}')
+                        client_to_kick=clients[index_name]
+                        clients.remove(client_to_kick)
+                        client_to_kick.send('you were kicked by admin'.encode('ascii'))
+                        client_to_kick.close()
+                        aliases.remove(name)
+                        broadcast(f'{name} was kicked by admin'.encode('ascii'))
+                        with open('test.txt','a') as file :
+                            file.write(f'{name}\n')
+
+                        with open('test.txt') as file:
+                            print ('contents of file are ##########')
+                            name=file.readlines()
+                            banned_users.append(name)
+                            print(f'banned users {banned_users}')
+                            
+                        # f=open('banned_users.txt','a')
+                        # f.write(name)
+                        # f.close()
+                        # with open(banned_users.txt) as file:
+                        #     names = [line.rstrip() for line in file]
+                        #     banned_users.append(names)
+                        # print (f'banned users are {banned_users} ')
+                            
+                        continue
                 # print('before name remove ')
                 # clients.remove(name)
                 # print(f'client removed is name {name}')
@@ -54,7 +78,8 @@ def handle_client(client):
                 # broadcast(f" {alias} banned by admin ".encode('ascii'))
                 # print('after broadcast')
                 # aliases.remove(alias)
-
+                if first_word=='/ban':
+                    print (f'we will ban this user {name}')
             else:
                 broadcast(message)
         except:
@@ -65,6 +90,8 @@ def handle_client(client):
             alias=aliases[index]
             broadcast(f" {alias} left the chat".encode('ascii'))
             aliases.remove(alias)
+            os.remove('test.txt')  
+
             break
 
 def run_server():

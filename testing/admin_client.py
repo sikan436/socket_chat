@@ -6,6 +6,15 @@ alias=input("enter your alias")
 server.connect((ip_addr,port))
 if alias=='admin':
     password=input('enter admin password')
+print (f'alias {alias}' )
+try:
+    with open('test.txt') as file:
+        name=file.readlines()
+        print (f'name {name}')
+        # if alias==name:
+        #     print('banned user spotted')
+except FileNotFoundError:
+    print ('first login')
 
 stop_thread=False
 
