@@ -20,6 +20,7 @@ def handle_client(client):
             m1=musg.decode('ascii')
             mn=m1.split(':',1)
             
+                
             nick=mn[0]
             words=mn[1]
             print (f'message {words} recieved from alias {nick}')
@@ -58,15 +59,6 @@ def handle_client(client):
                             name=file.readlines()
                             banned_users.append(name)
                             print(f'banned users {banned_users}')
-                            
-                        # f=open('banned_users.txt','a')
-                        # f.write(name)
-                        # f.close()
-                        # with open(banned_users.txt) as file:
-                        #     names = [line.rstrip() for line in file]
-                        #     banned_users.append(names)
-                        # print (f'banned users are {banned_users} ')
-                            
                         continue
                 # print('before name remove ')
                 # clients.remove(name)
@@ -122,5 +114,6 @@ def run_server():
         client.send("you are now connected".encode('ascii'))
         thread=threading.Thread(target=handle_client,args=(client,))
         thread.start()
+
 if __name__=="__main__":
     run_server()

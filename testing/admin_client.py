@@ -8,13 +8,25 @@ if alias=='admin':
     password=input('enter admin password')
 print (f'alias {alias}' )
 try:
-    with open('test.txt') as file:
-        name=file.readlines()
-        print (f'name {name}')
-        # if alias==name:
-        #     print('banned user spotted')
+        with open('C:\\Users\\asus\\Projects\\socket_chat\\test.txt') as file:
+
+                                    name=file.readlines()
+                                    print(type(name))
+                                    print(name)
+                                    for names in name:
+                                         new=names.strip('\n')
+                                         print(f'names is {names} {type(names)} alias is {alias}')
+                                         
+                                         if new==alias:
+                                            print(f'aha you were banned . how dare login {alias}')
+                                            # server.close()
+                                            server.send('close conn'.encode('ascii'))
+                                            stop_thread=True
+                                            
+                                            
+                                    
 except FileNotFoundError:
-    print ('first login')
+        print ('first login')
 
 stop_thread=False
 
@@ -70,6 +82,3 @@ if __name__=='__main__':
     rcv_thread.start()    
     send_thread=threading.Thread(target=msg_send)
     send_thread.start()
-            
-
-            
