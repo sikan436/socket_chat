@@ -7,6 +7,7 @@ server.connect((ip_addr,port))
 if alias=='admin':
     password=input('enter admin password')
 print (f'alias {alias}' )
+stop_thread=False
 try:
         with open('C:\\Users\\asus\\Projects\\socket_chat\\test.txt') as file:
 
@@ -20,7 +21,7 @@ try:
                                          if new==alias:
                                             print(f'aha you were banned . how dare login {alias}')
                                             # server.close()
-                                            server.send('close conn'.encode('ascii'))
+                                   
                                             stop_thread=True
                                             
                                             
@@ -28,7 +29,7 @@ try:
 except FileNotFoundError:
         print ('first login')
 
-stop_thread=False
+
 
 def msg_rcv():
     while True:

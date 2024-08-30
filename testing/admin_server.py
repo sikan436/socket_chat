@@ -28,9 +28,11 @@ def handle_client(client):
             # allki_word=words.split(' ',1)
             all_words=words.split(' ',1)
             first_word=all_words[0]
-            print (f'first word is {first_word}')
+            # print (f'first word is {first_word}')
             first_char=words[0]
-
+            if musg=='close conn':
+                print('command close conn recieved')
+                print('close connection')
             if nick=='admin' and first_char=='/':
                 print('command recieved from admin, taking action')
                 culpit=words.split(' ',1)
@@ -82,7 +84,8 @@ def handle_client(client):
             alias=aliases[index]
             broadcast(f" {alias} left the chat".encode('ascii'))
             aliases.remove(alias)
-            os.remove('test.txt')  
+            if alias=='admin':
+                os.remove('test.txt')  
 
             break
 
