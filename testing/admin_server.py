@@ -62,16 +62,7 @@ def handle_client(client):
                             banned_users.append(name)
                             print(f'banned users {banned_users}')
                         continue
-                # print('before name remove ')
-                # clients.remove(name)
-                # print(f'client removed is name {name}')
-                # client.close()
-                # print ('client closed')
-                # alias=aliases[index]
-                # print ('before broadcast')
-                # broadcast(f" {alias} banned by admin ".encode('ascii'))
-                # print('after broadcast')
-                # aliases.remove(alias)
+                
                 if first_word=='/ban':
                     print (f'we will ban this user {name}')
             else:
